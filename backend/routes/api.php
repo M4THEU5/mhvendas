@@ -34,4 +34,11 @@ Route::get('/clientes/{id}','ClienteController@listar_cliente')->where('id', '[0
 Route::get('/clientes', 'ClienteController@listar_clientes');
 Route::post('/clientes', 'ClienteController@cadastrar_cliente');
 Route::delete('/clientes/{id}', 'ClienteController@remover_cliente')->where('id', '[0-9]+');  
-Route::put('/clientes/{id}', 'ClienteController@editar_cliente')->where('id', '[0-9]+');      
+Route::put('/clientes/{id}', 'ClienteController@editar_cliente')->where('id', '[0-9]+');
+
+    // CLIENTES
+Route::get('/vendas/{id}','VendaController@listar_venda')->where('id', '[0-9]+');
+Route::get('/vendas', 'VendaController@listar_vendas');
+Route::post('/vendas', 'VendaController@cadastrar_venda');
+Route::delete('/vendas/{id}', 'VendaController@remover_venda')->where('id', '[0-9]+');  
+Route::put('/vendas/{id}', 'VendaController@editar_venda')->where('id', '[0-9]+'); 
