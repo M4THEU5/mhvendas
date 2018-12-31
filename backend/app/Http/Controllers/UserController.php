@@ -5,8 +5,53 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Http\Controllers\Controller;
 use Exception;
+use Illuminate\Support\Facades\Auth; 
+use Validator;
+
 class UserController extends Controller
 {
+
+    public $successStatus = 200;
+
+    /** 
+     * login api 
+     * 
+     * @return \Illuminate\Http\Response 
+     */ 
+    public function login(){ 
+        if(Auth::attempt(['matricula' => request('matricula'), 'password' => request('password')])){ 
+            $user = Auth::user(); 
+            $success['token'] =  $user->createToken('mhvendasapi')-> accessToken; 
+            return response()->json(['success' => $success], $this-> successStatus); 
+        } 
+        else{ 
+            return response()->json(['error'=>'Unauthorised'], 401); 
+        } 
+    }
+    /** 
+     * Register api 
+     * 
+     * @return \Illuminate\Http\Response 
+     */ 
+    public function register(Request $request) 
+    { 
+        $validator = Validator::make($request->all(), [ 
+            'nome' => 'required', 
+            'email' => 'required|email', 
+            'password' => 'required',
+            'matricula' => 'required', 
+            'c_password' => 'required|same:password', 
+        ]);
+        if ($validator->fails()) { 
+            return response()->json(['error'=>$validator->errors()], 401);            
+        }
+        $input = $request->all(); 
+        $input['password'] = bcrypt($input['password']); 
+        $user = User::create($input); 
+        $success['token'] =  $user->createToken('mhvendasapi')-> accessToken; 
+        $success['nome'] =  $user->nome;
+        return response()->json(['success'=>$success], $this-> successStatus); 
+    }
     public function listar_usuario($id){
         try{
             return response()->json(User::findOrFail($id),200); 
@@ -20,18 +65,4 @@ class UserController extends Controller
         return response()->json(User::all(),200);
     }
     
-    public function cadastrar_usuario(Request $request)
-    {
-        try {
-            $user = new User();
-            $user->nome = $request['nome'];
-            $user->matricula = $request['matricula'];
-            $user->email = $request['email'];
-            $user->senha = md5($request['senha']);
-            $user->save();
-            return response()->json($user,200);
-           } catch (Exception $e) {
-               return response()->json(['error' => 'Ocorreu um erro, verifique os dados e tente novamente.'], 500);
-        }
-    }
 }

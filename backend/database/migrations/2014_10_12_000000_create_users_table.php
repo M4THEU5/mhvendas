@@ -19,7 +19,8 @@ class CreateUsersTable extends Migration
             $table->string('matricula');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('senha');
+            $table->string('password');
+            $table->string('api_token',2000)->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
