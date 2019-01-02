@@ -11,12 +11,14 @@
 
     <title>MH Vendas - Dashboard</title>
 
+
+
     <!-- Bootstrap core CSS-->
     <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom fonts for this template-->
     <link href="css/fontawesome-free/all.css" rel="stylesheet" type="text/css">
-
+    <link rel="stylesheet" href="css/jquery-loader/jquery.loadingModal.min.css">
 
     <!-- Custom styles for this template-->
     <link href="css/sb-admin.min.css" rel="stylesheet">
@@ -162,6 +164,19 @@
               <i class="fas fa-table"></i>
               Usuarios</div>
             <div class="card-body">
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Matricula</th>
+                    <th scope="col">Nome</th>
+                    <th scope="col">Ação</th>
+                  </tr>
+                </thead>
+                <tbody id="result-table">
+                  
+                </tbody>
+              </table>
               </div>
             </div>
             <div class="card-footer small text-muted"></div>
@@ -209,16 +224,20 @@
       </div>
     </div>
 
+   
     <!-- Bootstrap core JavaScript-->
     <script src="js/jquery/jquery.min.js"></script>
     <script src="js/bootstrap/bootstrap.bundle.min.js"></script>
 
     <!-- Core plugin JavaScript-->
     <script src="js/jquery-easing/jquery.easing.min.js"></script>
-
-
+   
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin/sb-admin.min.js"></script>
+     <script src="js/jquery-loader/jquery.loadingModal.min.js"></script>
+    <!-- global model js -->
+    <script src="js/model/global_model.js"></script>
+    <script src="js/model/dashboard_model.js"></script>
 
 
   </body>
