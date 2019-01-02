@@ -20,24 +20,29 @@
     <!-- Custom styles for this template-->
     <link href="css/sb-admin.min.css" rel="stylesheet">
 
+    <link rel="stylesheet" href="css/jquery-loader/jquery.loadingModal.min.css">
+
   </head>
 
   <body class="bg-dark">
-
+    <div id="stage_alert">
+      
+    </div>
     <div class="container">
+
       <div class="card card-login mx-auto mt-5">
         <div class="card-header">Login</div>
         <div class="card-body">
-          <form>
+          <form id="form_login" method="POST">
             <div class="form-group">
               <div class="form-label-group">
-                <input id="inputEmail" class="form-control" placeholder="Matricula" required="required" autofocus="autofocus">
+                <input id="inputEmail" class="form-control" placeholder="Matricula" required="required" autofocus="autofocus" name="matricula">
                 <label for="inputEmail">Matricula</label>
               </div>
             </div>
             <div class="form-group">
               <div class="form-label-group">
-                <input type="password" id="inputPassword" class="form-control" placeholder="Senha" required="required">
+                <input type="password" id="inputPassword" class="form-control" placeholder="Senha" required="required" name="password">
                 <label for="inputPassword">Senha</label>
               </div>
             </div>
@@ -49,7 +54,7 @@
                 </label>
               </div>
             </div>
-            <a class="btn btn-primary btn-block" href="index.html">Entrar</a>
+            <button id="btn-entrar" class="btn btn-primary btn-block" type="submit">Entrar</button>
           </form>
           <div class="text-center">
             <a class="d-block small mt-3" href="register.html">Criar Conta</a>
@@ -64,6 +69,12 @@
 
     <!-- Core plugin JavaScript-->
     <script src="js/jquery-easing/jquery.easing.min.js"></script>
+
+    <script src="js/jquery-loader/jquery.loadingModal.min.js"></script>
+    <!-- global model js -->
+    <script src="js/model/global_model.js"></script>
+    <!-- model js -->
+    <script src="js/model/login_model.js"></script>
 
   </body>
 

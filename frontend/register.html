@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
   <head>
 
     <meta charset="utf-8">
@@ -15,31 +14,43 @@
     <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom fonts for this template-->
-    <link href="csss/fontawesome-free/all.min.css" rel="stylesheet" type="text/css">
+    <link href="css/fontawesome-free/all.min.css" rel="stylesheet" type="text/css">
 
     <!-- Custom styles for this template-->
     <link href="css/sb-admin.min.css" rel="stylesheet">
 
+    <link rel="stylesheet" href="css/jquery-loader/jquery.loadingModal.min.css">
+
   </head>
 
   <body class="bg-dark">
-
+    <div id="stage_alert">
+      
+    </div>
     <div class="container">
-      <div class="card card-register mx-auto mt-5">
+      <div id="message_sucess" class="jumbotron mt-5" style="display: none">
+        <h1 class="display-4" id="nome_user"><h1>
+        <p class="lead">Seu cadastro foi realizado com sucesso, não esqueça da sua matricula e senha. Agora você pode entrar no sistema. </p>
+        
+        <p class="lead">
+          <a class="btn btn-primary btn-lg" role="button" href="login.html">Pagina de Login</a>
+        </p>
+      </div>
+      <div id="card" class="card card-register mx-auto mt-5">
         <div class="card-header">Registrar Úsuario</div>
         <div class="card-body">
-          <form>
+          <form id="form_register" method="POST">
             <div class="form-group">
               <div class="form-row">
                 <div class="col-md-6">
                   <div class="form-label-group">
-                    <input type="text" id="firstName" class="form-control" placeholder="Noem" required="required" autofocus="autofocus">
+                    <input type="text" id="firstName" class="form-control" placeholder="Nome" required="required" autofocus="autofocus" maxlength="10" name="nome">
                     <label for="firstName">Nome</label>
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="form-label-group">
-                    <input type="text" id="lastName" class="form-control" placeholder="Matricula" required="required">
+                    <input type="text" id="lastName" class="form-control" placeholder="Matricula" required="required" name="matricula">
                     <label for="lastName">Matricula</label>
                   </div>
                 </div>
@@ -47,7 +58,7 @@
             </div>
             <div class="form-group">
               <div class="form-label-group">
-                <input type="email" id="inputEmail" class="form-control" placeholder="Email" required="required">
+                <input type="email" id="inputEmail" class="form-control" placeholder="Email" required="required" name="email">
                 <label for="inputEmail">Email</label>
               </div>
             </div>
@@ -55,19 +66,19 @@
               <div class="form-row">
                 <div class="col-md-6">
                   <div class="form-label-group">
-                    <input type="password" id="inputPassword" class="form-control" placeholder="Senha" required="required">
+                    <input type="password" id="inputPassword" class="form-control" placeholder="Senha" required="required" name="password">
                     <label for="inputPassword">Senha</label>
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="form-label-group">
-                    <input type="password" id="confirmPassword" class="form-control" placeholder="Confirmar Senha" required="required">
+                    <input type="password" id="confirmPassword" class="form-control" placeholder="Confirmar Senha" required="required" name="c_password">
                     <label for="confirmPassword">Confirmar Senha</label>
                   </div>
                 </div>
               </div>
             </div>
-            <a class="btn btn-primary btn-block" href="login.html">Registrar</a>
+            <button id="btn-registrar" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Processing Order" class="btn btn-primary btn-block" type="submit">Registrar</button>
           </form>
           <div class="text-center">
             <a class="d-block small mt-3" href="login.html">Pagina de Login</a>
@@ -82,6 +93,13 @@
 
     <!-- Core plugin JavaScript-->
     <script src="js/jquery-easing/jquery.easing.min.js"></script>
+    
+    <script src="js/jquery-loader/jquery.loadingModal.min.js"></script>
+
+    <!-- global model js -->
+    <script src="js/model/global_model.js"></script>
+    <!-- model js -->
+    <script src="js/model/register_model.js"></script>
 
   </body>
 
