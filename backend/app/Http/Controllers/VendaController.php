@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Venda;
+use Carbon\Carbon;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Exception;
@@ -26,6 +27,8 @@ class VendaController extends Controller
     {    
        try{
            $venda = new Venda();
+           $request['usuarios_id'] = $request->user()->id;
+           $request['data'] = Carbon::now()->toDateTimeString();
            $venda->fill($request->all());
            $venda->save();
            return response()->json($venda, 201);

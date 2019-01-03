@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>MH Produtos - Vendas</title>
+
+
+
+    <!-- Bootstrap core CSS-->
+    <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom fonts for this template-->
+    <link href="css/fontawesome-free/all.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="css/jquery-loader/jquery.loadingModal.min.css">
+
+    <!-- Custom styles for this template-->
+    <link href="css/sb-admin.min.css" rel="stylesheet">
+
+  </head>
+
+  <body id="page-top">
+
+    <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
+
+      <a class="navbar-brand mr-1" href="dashboard.html">MH Vendas</a>
+
+      <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
+        <i class="fas fa-bars"></i>
+      </button>
+
+
+      <!-- Navbar -->
+      <ul class="navbar-nav ml-auto ml-md-0">
+        <li class="nav-item dropdown no-arrow">
+          <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-user-circle fa-fw"></i>
+          </a>
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">Sair</a>
+          </div>
+        </li>
+      </ul>
+
+    </nav>
+
+    <div id="wrapper">
+
+      <div id="content-wrapper">
+
+        <div class="container-fluid">
+
+          <!-- Breadcrumbs-->
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a href="#">Vendas</a>
+            </li>
+            <li class="breadcrumb-item active">Tela Inicial</li>
+          </ol>
+          <div id=stage_alert>
+            
+          </div>
+            <form method="POST" id="vendas_form">
+
+               <div class="form-group">
+                  <label for="exampleFormControlInput1">Produto : </label>
+                   <select name="produtos_id" class="form-control" id="select-produtos" required>
+                     <option selected disabled hidden value=''>Selecione o Produto</option>
+                   </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="exampleFormControlSelect1">Quantidade : </label>
+                     <input name="quantidade" class="form-control" id="quantidade_input" value="1" disabled required>
+                    </select>
+                </div>
+
+                 <div class="form-group">
+                  <label for="exampleFormControlInput1">Forma de Pagamento : </label>
+                    <select id="select-pagamento" name="forma_pagamento" class="form-control" disabled required>
+                         <option selected disabled hidden value="">Selecione a forma de pagamento </option>
+                          <option value="DINHEIRO">Dinheiro</option>
+                          <option value="CARTAO">Cartão</option>
+                          <option value="CHEQUE">Cheque</option>
+                          <option value="BOLETO">Boleto</option>        
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="exampleFormControlSelect1">Preço Final : </label>
+                     <input name="valor_total" class="form-control" id="preco_input" value="0,00" readonly required>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="exampleFormControlInput1">Cliente que vai comprar : </label>
+                   <select name="clientes_id" class="form-control" id="select-clientes" required>
+                     <option selected disabled hidden value=''>Selecione o Cliente</option>
+                   </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="exampleFormControlInput1">Status : </label>
+                    <select id="select-status" name="status" class="form-control" disabled required>
+                         <option selected disabled hidden value="">Selecione o status</option>
+                          <option value="1">Ativo</option>
+                           <option value="0">Inativo</option>        
+                    </select>
+                </div>
+
+               
+                <button id="btn-adicionar" value="0" type='submit' class='btn btn-primary form-control' disabled>Adicionar Venda</button><br><br>
+
+            </form>
+          <!-- DataTables Example -->
+          <div class="card mb-3">
+            <div class="card-header">
+              <i class="fas fa-table"></i>
+              Produtos</div>
+            <div class="card-body">
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Descrição</th>
+                    <th scope="col">Codigo Barras</th>
+                    <th scope="col">Criador Por</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Ação</th>
+                  </tr>
+                </thead>
+                <tbody id="result-table">
+                  
+                </tbody>
+              </table>
+              </div>
+            </div>
+            <div class="card-footer small text-muted"></div>
+          </div>
+
+        </div>
+        <!-- /.container-fluid -->
+
+        <!-- Sticky Footer -->
+        <footer class="sticky-footer">
+          <div class="container my-auto">
+            <div class="copyright text-center my-auto">
+              <span>Copyright © MHVendas 2019</span>
+            </div>
+          </div>
+        </footer>
+
+      </div>
+      <!-- /.content-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+      <i class="fas fa-angle-up"></i>
+    </a>
+
+   <div class="modal" tabindex="-1" role="dialog" id="modal_accept">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Deseja realmente excluir ? </h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Se você excluir, todo registro que estiver relacionado com o produto tambem será excluido, como as vendas em que ele estiver relacionado. Deseja realmente excluir esse produto ? </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="excluir-btn-accept" class="btn btn-primary">Excluir</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal" tabindex="-1" role="dialog" id="modal_info">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Informações do produto...</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" id="modal-info-produto">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" tabindex="-1" role="dialog" id="modal_info_user">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Informações do usuario...</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" id="modal-info-usuario">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+    <input type="hidden" id="valor_vista" value="0">
+    <input type="hidden" id="valor_prazo" value="0">
+
+   
+    <!-- Bootstrap core JavaScript-->
+    <script src="js/jquery/jquery.min.js"></script>
+    <script src="js/bootstrap/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="js/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Jquery Mask -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.js"></script>
+    <!-- Custom scripts for all pages-->
+    <script src="js/sb-admin/sb-admin.min.js"></script>
+     <script src="js/jquery-loader/jquery.loadingModal.min.js"></script>
+    <!-- global model js -->
+    <script src="js/model/global_model.js"></script>
+    <script src="js/model/vendas_model.js"></script>
+
+
+  </body>
+
+</html>

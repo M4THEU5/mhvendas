@@ -1,4 +1,9 @@
 const link_api = "http://localhost:8000";
+const headers = function(request) {
+		    request.setRequestHeader("Authorization", "Bearer "+sessionStorage.getItem("token"));
+		    request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+		    request.setRequestHeader("Accept", "application/json");
+};
 
 function show_loading(){
 	$('body').loadingModal({
@@ -25,8 +30,6 @@ function login_user(token){
 
 function verify_authentication_exits(page_name){
 	if (!(sessionStorage.getItem("token") === null)) {
-		console.log(sessionStorage.getItem("token"));
-		console.log(sessionStorage.getItem("token"));
 		if(page_name==="login"){
 			window.location.href = "dashboard.html";
 		}				  	
@@ -35,4 +38,18 @@ function verify_authentication_exits(page_name){
 			window.location.href = "login.html";
 		}
 	}
+}
+
+function formDataToJSON(formElement) {    
+    var formData = new FormData(formElement),
+        convertedJSON = {};
+
+    formData.forEach(function(value, key) {
+    	if(key == "renda" || key == "preco_vista" || key == "preco_prazo" || key == "valor_total"){
+    		value = value.replace(".","").replace(",","");
+    	}
+        convertedJSON[key] = value;
+    });
+
+    return convertedJSON;
 }
