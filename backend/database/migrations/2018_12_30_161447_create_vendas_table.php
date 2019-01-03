@@ -22,7 +22,7 @@ class CreateVendasTable extends Migration
             $table->integer('quantidade')->unsigned();
             $table->enum('forma_pagamento', array('DINHEIRO', 'CARTAO', 'CHEQUE','BOLETO'));
             $table->dateTime('data');
-            $table->float('valor_total');
+            $table->integer('valor_total');
             $table->integer('usuarios_id')->unsigned();
             $table->foreign('usuarios_id')->references('id')->on('usuarios');
             $table->integer('status');

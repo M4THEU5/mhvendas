@@ -22,7 +22,7 @@ class CreateClientesTable extends Migration
             $table->integer('numero');
             $table->string('estado');
             $table->string('cidade');
-            $table->float('renda');
+            $table->integer('renda');
             $table->integer('usuarios_id')->unsigned();
             $table->foreign('usuarios_id')->references('id')->on('usuarios');
             $table->integer('status');

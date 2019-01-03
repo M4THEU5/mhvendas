@@ -26,6 +26,7 @@ class ClienteController extends Controller
     {    
        try{
            $cliente = new Cliente();
+           $request['usuarios_id'] = $request->user()->id;
            $cliente->fill($request->all());
            $cliente->save();
            return response()->json($cliente, 201);
