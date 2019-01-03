@@ -17,15 +17,17 @@ use Illuminate\Http\Request;
 Route::post('login', ['as' => 'login', 'uses' => 'UserController@login']);
     // REGISTRAR
 Route::post('register', 'UserController@register');
-Route::get('teste', 'UserController@verify_if_user_email_or_user_matricula_exits');
 
     // REQUER AUTENTICAÇÃO
 Route::group(['middleware' => 'auth:api'], function(){
+        //DASHBOARD
+    Route::get('/dashboard', 'DashBoardController@info');
         // USUARIOS
     Route::get('/usuarios/{id}','UserController@listar_usuario')->where('id', '[0-9]+');
     Route::get('/usuarios', 'UserController@listar_usuarios');
     Route::delete('/usuarios/{id}', 'UserController@remover_usuario')->where('id', '[0-9]+');
-        // PRODUTOS
+    Route::put('/usuarios/{id}', 'UserController@editar_usuario')->where('id', '[0-9]+');
+    // PRODUTOS
     Route::get('/produtos/{id}','ProdutoController@listar_produto')->where('id', '[0-9]+');
     Route::get('produtos', 'ProdutoController@listar_produtos');
     Route::post('/produtos', 'ProdutoController@cadastrar_produto');

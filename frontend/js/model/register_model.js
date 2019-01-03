@@ -16,9 +16,16 @@ $("#form_register").submit(function(e){
 		    	$("#message_sucess").show();
 		    	$("#card").hide();
 	    	},
-	    	error : function(error){
+	    	error : function(xhr, ajaxOptions, thrownError){
 	    		$('body').loadingModal('destroy');
-	    		message_alert("Ocorreu um erro");
+	    		 switch (xhr.status) {
+		        	case 406:
+		        	    message_alert(xhr.responseJSON);
+		        	    break;
+		        	default:
+		        		 message_alert("Ocorreu um error");
+		        		 break;          
+		    	}
 	    	}
     	});
 	}else{

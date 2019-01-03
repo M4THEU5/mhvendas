@@ -21,7 +21,7 @@ class CreateProdutosTable extends Migration
             $table->integer('preco_prazo');
             $table->integer('codigo_barras');
             $table->integer('usuarios_id')->unsigned();
-            $table->foreign('usuarios_id')->references('id')->on('usuarios');
+            $table->foreign('usuarios_id')->references('id')->on('usuarios')->onDelete('cascade');
             $table->integer('status');
             $table->timestamps();
         });

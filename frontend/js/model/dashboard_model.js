@@ -3,23 +3,18 @@ $(window).on('load', function() {
   show_loading();
   var line = '';
   $.ajax({
-	    url : link_api+"/api/usuarios/",
-	    beforeSend: function(request) {
-		    request.setRequestHeader("Authorization", "Bearer "+sessionStorage.getItem("token"));
-		    request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-		    request.setRequestHeader("Accept", "application/json");
-		},
+	    url : link_api+"/api/dashboard/",
+	    beforeSend: headers,
 	    dataType : "json",
 	    method : "get",
 	    contentType : false,
 	    processData : false,
 	    success : function(data){
 	    	$('body').loadingModal('destroy');
-	    	for(var i = 0; i < data.length; i++){
-	    		line += "<tr><th scope='row'>"+data[i].id+"</th><td>"+data[i].matricula+"</td><td>"+data[i].nome+"</td><td><button type='button' class='btn btn-primary'>Editar</button>  <button type='button' class='btn btn-danger'>Excluir</button></td></tr>";	
-	    	}
-
-	    	$("#result-table").html(line);
+	    	$("#clientes_cadastrados").html(data.clientes+" Cliente(s) Cadastrado(s)");
+	    	$("#produtos_cadastrados").html(data.produtos+" Produto(s) Cadastrado(s)");
+	    	$("#usuarios_cadastrados").html(data.users+" Usuário(s) Cadastrado(s)");
+	    	$("#vendas_cadastradas").html(data.vendas+" Venda(s) Cadastrada(s)");
     	},
     	error : function(error){
     		window.location.href = "login.html";

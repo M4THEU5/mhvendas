@@ -1,9 +1,17 @@
+
+
 const link_api = "http://localhost:8000";
 const headers = function(request) {
 		    request.setRequestHeader("Authorization", "Bearer "+sessionStorage.getItem("token"));
 		    request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 		    request.setRequestHeader("Accept", "application/json");
 };
+
+$("#logout").on('click', function(e){
+	e.preventDefault();
+	sessionStorage.removeItem('token');
+	location.reload();
+});
 
 function show_loading(){
 	$('body').loadingModal({

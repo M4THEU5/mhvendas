@@ -34,26 +34,37 @@ $("#form_register").submit(function(e){
 		url_link = link_api+"/api/usuarios/";
 	}else{
 		method = 'PUT';
-		url_link = link_api+"/api/usarios/"+$("#btn-adicionar").val();
+		url_link = link_api+"/api/usuarios/"+$("#btn-adicionar").val();
 	}
 	var data = formDataToJSON($(this)[0]);
-	show_loading();
-	$.ajax({
-	    url : url_link,
-	    beforeSend: headers,
-	    dataType : "json",
-	    method : method,
-	    data : data,
-	    contentType : "application/x-www-form-urlencoded",
-	    success : function(data){
-	    	$('body').loadingModal('destroy');
-	    	location.reload();
-    	},
-    	error : function(error){
-    		$('body').loadingModal('destroy');
-    		message_alert("Ocorreu um erro ao solicitar os dados para o servidor.");
-    	}
-	});
+	if($("#password_input").val() == $("#cpassowrd_input").val()){
+		show_loading();
+		$.ajax({
+		    url : url_link,
+		    beforeSend: headers,
+		    dataType : "json",
+		    method : method,
+		    data : data,
+		    contentType : "application/x-www-form-urlencoded",
+		    success : function(data){
+		    	$('body').loadingModal('destroy');
+		    	location.reload();
+	    	},
+	    	error : function(xhr, ajaxOptions, thrownError){
+	    		$('body').loadingModal('destroy');
+	    		 switch (xhr.status) {
+		        	case 406:
+		        	    message_alert(xhr.responseJSON);
+		        	    break;
+		        	default:
+		        		 message_alert("Ocorreu um error");
+		        		 break;          
+		    	}
+	    	}
+		});
+	}else{
+		message_alert("As senhas não coicidem.");
+	}
 });
 $('#modal_accept').on('show.bs.modal', function(e) {
 
@@ -70,10 +81,19 @@ $('#modal_accept').on('show.bs.modal', function(e) {
 	    	$('body').loadingModal('destroy');
 	    	location.reload();
     	},
-    	error : function(error){
-    		$('body').loadingModal('destroy');
-    		message_alert("Ocorreu um erro ao solicitar os dados para o servidor.");
-    	}
+    	error : function(xhr, ajaxOptions, thrownError){
+	    		$('body').loadingModal('destroy');
+	    		 switch (xhr.status) {
+		        	case 406:
+		        		$(this).hide();
+		        	    message_alert(xhr.responseJSON);
+		        	    break;
+		        	default:
+		        		 $(this).hide();
+		        		 message_alert("Ocorreu um error");
+		        		 break;          
+		    	}
+	    }
 	});
 	});
 });
@@ -134,6 +154,13 @@ $(document).on("click", "#btn-editar", function(event){
     	$("#email_input").val(data.email)
     	$("#btn-adicionar").val(data.id);
 
+    	$("#nome_input").prop("readonly", false);
+    	$("#matricula_input").prop("readonly", false);
+    	$("#email_input").prop("readonly", false);
+    	$("#password_input").prop("readonly", false);
+    	$("#cpassowrd_input").prop("readonly", false);
+		$("#btn-adicionar").prop("disabled", false);
+    				
 	},
 	error : function(error){
 		$('body').loadingModal('destroy');

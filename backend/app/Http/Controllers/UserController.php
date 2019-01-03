@@ -17,7 +17,29 @@ class UserController extends Controller
      * login api 
      * 
      * @return \Illuminate\Http\Response 
-     */ 
+     */
+    public function verify_if_user_email_exits($email){
+        $users = User::all();
+        
+        $user = $users->where('email', $email)->first();
+        if($user != ''){
+            return true;
+        }
+
+        return false;
+
+    }
+
+    public function verify_if_user_matricula_exits($matricula){
+        $users = User::all();
+        
+        $user = $users->where('matricula', $matricula)->first();
+        if($user != ''){
+            return true;
+        }
+
+        return false;
+    } 
     public function login(){ 
         if(Auth::attempt(['matricula' => request('matricula'), 'password' => request('password')])){ 
             $user = Auth::user(); 
@@ -42,9 +64,17 @@ class UserController extends Controller
             'matricula' => 'required', 
             'c_password' => 'required|same:password', 
         ]);
+
         if ($validator->fails()) { 
             return response()->json(['error'=>$validator->errors()], 401);            
         }
+        if($this->verify_if_user_email_exits($request['email'])){
+            return response()->json('Já existe um usuario cadastrado com esse email', 406);  
+        }
+        if($this->verify_if_user_matricula_exits($request['matricula'])){
+            return response()->json('Já existe um usuario cadastrado com essa matricula', 406);  
+        }
+
         $input = $request->all(); 
         $input['password'] = bcrypt($input['password']); 
         $user = User::create($input); 
@@ -61,8 +91,11 @@ class UserController extends Controller
         
     }
 
-    public function remover_usuario($id){
+    public function remover_usuario(Request $request,$id){
         try{
+            if($request->user()->id == $id){
+                return response()->json('Você não pode remover seu propio usuario.', 406); 
+            }
             $user = User::findOrFail($id);
             $user->delete();
             return response()->json('Success', 200);
@@ -71,21 +104,46 @@ class UserController extends Controller
         }
     }
 
+    public function editar_usuario(Request $request, $id){
+        try{
+            $user = User::findOrFail($id);
+            $validator = Validator::make($request->all(), [ 
+                'nome' => 'required', 
+                'email' => 'required|email', 
+                'password' => 'required',
+                'matricula' => 'required', 
+                'c_password' => 'required|same:password', 
+            ]);
+    
+            if ($validator->fails()) { 
+                return response()->json(['error'=>$validator->errors()], 401);            
+            }
+            
+            
+            if($user->email != $request['email']){
+                if($this->verify_if_user_email_exits($request['email'])){
+                    return response()->json('Já existe um usuario cadastrado com esse email', 406);  
+                }
+            }
+            if($user->matricula != $request['matricula']){
+                if($this->verify_if_user_matricula_exits($request['matricula'])){
+                    return response()->json('Já existe um usuario cadastrado com essa matricula', 406);  
+                }
+            }
+            
+            $request['password'] = bcrypt($request['password']);
+            $user->fill($request->all());
+            $user->save();
+            return Response()->json($user,200);
+        }catch(Exception $e){
+            return response()->json(['error' => $e->getMessage()], 400);
+        }       
+    }
+
     public function listar_usuarios(Request $request){
         return response()->json(User::all(),200);
     }
 
-    public function verify_if_user_email_or_user_matricula_exits(){
-        $users = User::all();
-        $desired_object = $users->first(function($item) {
-            return $item->matricula == 'nicker';
-        });
-
-        if($desired_object == ''){
-            return response()->json('fasfasffa', 400);
-        }
-
-        return response()->json($desired_object, 400);
-    }
+    
     
 }
