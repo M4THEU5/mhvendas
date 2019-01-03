@@ -61,8 +61,31 @@ class UserController extends Controller
         
     }
 
+    public function remover_usuario($id){
+        try{
+            $user = User::findOrFail($id);
+            $user->delete();
+            return response()->json('Success', 200);
+        } catch(Exception $e){
+            return response()->json(['error' => 'Usuário não encontrado'], 400);
+        }
+    }
+
     public function listar_usuarios(Request $request){
         return response()->json(User::all(),200);
+    }
+
+    public function verify_if_user_email_or_user_matricula_exits(){
+        $users = User::all();
+        $desired_object = $users->first(function($item) {
+            return $item->matricula == 'nicker';
+        });
+
+        if($desired_object == ''){
+            return response()->json('fasfasffa', 400);
+        }
+
+        return response()->json($desired_object, 400);
     }
     
 }
