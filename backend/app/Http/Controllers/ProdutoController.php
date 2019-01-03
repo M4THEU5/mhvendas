@@ -26,6 +26,7 @@ class ProdutoController extends Controller
     {    
        try{
            $produto = new Produto();
+           $request['usuarios_id'] = $request->user()->id;
            $produto->fill($request->all());
            $produto->save();
            return response()->json($produto, 201);
