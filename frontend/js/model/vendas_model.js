@@ -4,6 +4,7 @@ $(window).on('load', function() {
   show_loading();
   $("#quantidade_input").mask('0000', {reverse: true});
   $("#preco_input").mask('#.##0,00', {reverse: true});
+  $(".valor").mask('#.##0,00', {reverse: true});
   var line = '';
   var produtos = "<option selected disabled hidden value=''>Selecione o Produto</option>";
   var clientes = "<option selected disabled hidden value=''>Selecione o Cliente</option>";
@@ -17,7 +18,8 @@ $(window).on('load', function() {
 	    success : function(data){
 	    	$('body').loadingModal('destroy');
 	    	for(var i = 0; i < data.length; i++){
-	    		line += "<tr><th scope='row'>"+data[i].id+"</th><td>"+data[i].nome+"</td><td>"+data[i].cpf+"</td><td><a href='#' data-toggle='modal' data-whatever='"+data[i].usuarios_id+"' data-target='#modal_info_user' >"+data[i].usuarios_id+"</a></td><td>"+data[i].status+"</td><td><button id='btn-editar' value='"+data[i].id+"' type='button' class='btn btn-primary'>Editar</button>  <button type='button' id='btn-excluir' data-toggle='modal' data-target='#modal_accept' data-whatever='"+data[i].id+"' class='btn btn-danger'>Excluir</button>  <button type='button' data-toggle='modal' data-target='#modal_info' data-whatever='"+data[i].id+"' class='btn btn-success'>Visualizar</button></td></tr>";	
+	    		console.log(data[i]);
+	    		line += "<tr><th scope='row'>"+data[i].id+"</th><td> <a href='#' data-toggle='modal' data-whatever='"+data[i].produtos_id+"' data-type='produtos' data-target='#modal_info_user'>"+data[i].produtos_id+"</a></td><td> <a href='#' data-toggle='modal' data-whatever='"+data[i].produtos_id+"' data-type='clientes' data-target='#modal_info_user'>"+data[i].clientes_id+"</a></td><td><a href='#' data-toggle='modal' data-whatever='"+data[i].usuarios_id+"' data-target='#modal_info_user' >"+data[i].usuarios_id+"</a></td><td>"+data[i].status+"</td><td><button id='btn-editar' value='"+data[i].id+"' type='button' class='btn btn-primary'>Editar</button>  <button type='button' id='btn-excluir' data-toggle='modal' data-target='#modal_accept' data-whatever='"+data[i].id+"' class='btn btn-danger'>Excluir</button>  <button type='button' data-toggle='modal' data-target='#modal_info' data-whatever='"+data[i].id+"' class='btn btn-success'>Visualizar</button></td></tr>";	
  	    	}
 
 	    	$("#result-table").html(line);
@@ -139,7 +141,7 @@ $('#modal_accept').on('show.bs.modal', function(e) {
   	$(document).on("click", "#excluir-btn-accept", function(event){
   		show_loading();
    		$.ajax({
-	    url : link_api+"/api/clientes/"+id,
+	    url : link_api+"/api/vendas/"+id,
 	    beforeSend: headers,
 	    dataType : "json",
 	    method : "DELETE",
@@ -158,13 +160,14 @@ $('#modal_info').on('show.bs.modal', function(e) {
     var id = $(e.relatedTarget).data('whatever');
 	show_loading();
 	$.ajax({
-    url : link_api+"/api/clientes/"+id,
+    url : link_api+"/api/vendas/"+id,
     beforeSend: headers,
     dataType : "json",
     method : "GET",
     success : function(data){
+    	console.log(data);
     	$('body').loadingModal('destroy');
-    	$("#modal-info-cliente").html("ID : "+data.id + "<br>" + "NOME : " + data.nome + "<br>" + "CPF : " + data.cpf + "<br>" + "RG : " + data.rg + "<br>" + "Endereço : " + data.endereco + "<br>" + "NUMERO : " + data.numero + "<br>" + "RENDA : R$" + data.renda + "<br>" + "CRIADO POR / ULTIMO A MODIFICAR : " + data.usuarios_id + "<br>" + "ESTADO  : " + data.estado + "<br>" + "CIDADE  : " + data.cidade + "<br>" + "STATUS  : " + data.status + "<br>" + "CRIADO EM  : " + data.created_at + "<br>" + "MODIFICADO ULTIMA VEZ EM : " + data.updated_at);
+    	$("#modal-info-venda").html("ID : "+data.id + "<br>" + "PRODUTO : " + data.produtos_id + "<br>" + "FORMA DE PAGAMENTO : " + data.forma_pagamento + "<br>" + "QUANTIDADE : " + data.quantidade + "<br>" + "VALOR TOTAL : R$" + data.valor_total + "<br>" + "CLIENTE : " + data.clientes_id + "<br>" + "VENDEDOR : " + data.usuarios_id + "<br>" + "STATUS  : " + data.status + "<br>" + "CRIADO EM  : " + data.created_at + "<br>" + "MODIFICADO ULTIMA VEZ EM : " + data.updated_at);
 	},
 	error : function(error){
 		$('body').loadingModal('destroy');
@@ -175,18 +178,36 @@ $('#modal_info').on('show.bs.modal', function(e) {
 
 
 $('#modal_info_user').on('show.bs.modal', function(e) {
-
+	var url = '';
     var id = $(e.relatedTarget).data('whatever');
+    if($(e.relatedTarget).data('type') == "produtos"){
+    	url = link_api+"/api/produtos/"+id;
+    }else if($(e.relatedTarget).data('type') == "clientes"){
+    	url = link_api+"/api/clientes/"+id;
+    }
+    else{
+    	url = link_api+"/api/usuarios/"+id
+    }
 	show_loading();
 	$.ajax({
-    url : link_api+"/api/usuarios/"+id,
+    url : url,
     beforeSend: headers,
     dataType : "json",
     method : "GET",
     success : function(data){
     	console.log(data);
     	$('body').loadingModal('destroy');
-    	$("#modal-info-usuario").html("ID : "+data.id + "<br>" + "NOME : " + data.nome + "<br>" + "Matricula : " + data.matricula + "<br>" + "email : " + data.email);
+    	 if($(e.relatedTarget).data('type') == "produtos"){
+    	 	$("#modal-title-user").html("Informações Produto...");
+    	 	$("#modal-info-usuario").html("ID : "+data.id + "<br>" + "DESCRIÇÃO : " + data.descricao + "<br>" + "DETALHAMENTO : " + data.detalhamento + "<br>" + "PREÇO A VISTA : R$" + data.preco_vista + "<br>" + "PREÇO A PRAZO : R$" + data.preco_prazo + "<br>" + "CODIGO DE BARRAS : " + data.codigo_barras + "<br>" + "CRIADO / MODIFICADO POR : " + data.usuarios_id + "<br>" + "STATUS : " + data.status + "<br>" + "CRIADO EM : " + data.created_at + "<br>" +"MODIFICADO ULTIMA VEZ EM : " + data.updated_at);
+    	 }else if($(e.relatedTarget).data('type') == "clientes"){
+    	 	$("#modal-title-user").html("Informações Cliente...");
+    	 	$("#modal-info-usuario").html("ID : "+data.id + "<br>" + "NOME : " + data.nome + "<br>" + "CPF : " + data.cpf + "<br>" + "ENDEREÇO : " + data.endereco + "<br>" + "NUMERO : " + data.numero + "<br>" + "RENDA : R$<span class='valor'>" + data.renda + "</span><br>" + "CRIADO / MODIFICADO POR : " + data.usuarios_id + "<br>" + "STATUS : " + data.status + "<br>" + "CRIADO EM : " + data.created_at + "<br>" +"MODIFICADO ULTIMA VEZ EM : " + data.updated_at);
+    	 }
+    	 else{
+    	 	$("#modal-title-user").html("Informações Usuario...");
+    	 	$("#modal-info-usuario").html("ID : "+data.id + "<br>" + "NOME : " + data.nome + "<br>" + "Matricula : " + data.matricula + "<br>" + "email : " + data.email);
+    	 }	
 	},
 	error : function(error){
 		$('body').loadingModal('destroy');
@@ -199,23 +220,39 @@ $('#modal_info_user').on('show.bs.modal', function(e) {
 $(document).on("click", "#btn-editar", function(event){
 	show_loading();
 	$.ajax({
-    url : link_api+"/api/clientes/"+this.value,
+    url : link_api+"/api/vendas/"+this.value,
     beforeSend: headers,
     dataType : "json",
     method : "GET",
     success : function(data){
     	console.log(data);
-    	$('body').loadingModal('destroy');
-    	$("#nome_input").val(data.nome);
-    	$("#cpf_input").val(data.cpf);
-    	$("#endereco_input").val(data.endereco);
-    	$("#rg_input").val(data.rg);
-    	$("#numero_input").val(data.numero);
-    	$("#saldo_input").val(data.renda);
-    	$('#select-estados').val(data.estado);
-    	$('#select-status').val(data.status);
-    	$("#btn-adicionar").html("Alterar Cliente");
-    	$("#btn-adicionar").val(data.id);
+    	$("#select-produtos").val(data.produtos_id);
+    	$("#quantidade_input").val(data.quantidade);
+    	$("#select-pagamento").val(data.forma_pagamento);
+    	$("#select-clientes").val(data.clientes_id);
+    	$("#select-status").val(data.status);
+    	$("#preco_input").val(data.valor_total).trigger('input');
+		$("#quantidade_input").prop("disabled", false);
+		$("#select-status").prop("disabled", false);
+		$("#select-pagamento").prop("disabled", false);
+		$("#btn-adicionar").prop("disabled", false);
+    	$("#btn-adicionar").html("Alterar Venda");
+    	$("#btn-adicionar").val(data.id);	
+		$.ajax({
+			url : link_api+"/api/produtos/"+$("#select-produtos").val(),
+			beforeSend: headers,
+			dataType : "json",
+			method : "GET",
+			success: function(data){
+				$("#valor_prazo").val(data.preco_prazo);
+				$("#valor_vista").val(data.preco_vista);
+				$('body').loadingModal('destroy');
+			},
+		    error : function(error){
+				$('body').loadingModal('destroy');
+				message_alert("Ocorreu um erro ao solicitar os dados para o servidor.");
+			}
+		});
 
 	},
 	error : function(error){

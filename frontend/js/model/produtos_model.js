@@ -134,8 +134,8 @@ $(document).on("click", "#btn-editar", function(event){
     	$('body').loadingModal('destroy');
     	$("#descricao_input").val(data.descricao);
     	$("#detalhamento_input").val(data.detalhamento);
-    	$("#preco_vista_input").val(data.preco_vista);
-    	$("#preco_prazo_input").val(data.preco_prazo);
+    	$("#preco_vista_input").val(data.preco_vista).trigger('input');
+    	$("#preco_prazo_input").val(data.preco_prazo).trigger('input');
     	$("#cod_barra_input").val(data.codigo_barras);
     	$('#select-status').val(data.status);
     	$("#btn-adicionar").html("Alterar Produto");

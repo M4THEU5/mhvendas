@@ -122,15 +122,15 @@
           <div class="card mb-3">
             <div class="card-header">
               <i class="fas fa-table"></i>
-              Produtos</div>
+              Vendas</div>
             <div class="card-body">
               <table class="table table-bordered">
                 <thead>
                   <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Descrição</th>
-                    <th scope="col">Codigo Barras</th>
-                    <th scope="col">Criador Por</th>
+                    <th scope="col">Produto</th>
+                    <th scope="col">Cliente</th>
+                    <th scope="col">Vendedor</th>
                     <th scope="col">Status</th>
                     <th scope="col">Ação</th>
                   </tr>
@@ -177,7 +177,7 @@
           </button>
         </div>
         <div class="modal-body">
-          <p>Se você excluir, todo registro que estiver relacionado com o produto tambem será excluido, como as vendas em que ele estiver relacionado. Deseja realmente excluir esse produto ? </p>
+          <p>Se você excluir, todo registro que estiver relacionado com a venda tambem será excluido. Deseja realmente excluir essa venda ? </p>
         </div>
         <div class="modal-footer">
           <button type="button" id="excluir-btn-accept" class="btn btn-primary">Excluir</button>
@@ -190,12 +190,12 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Informações do produto...</h5>
+          <h5 class="modal-title">Informações da venda...</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <div class="modal-body" id="modal-info-produto">
+        <div class="modal-body" id="modal-info-venda">
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
@@ -208,7 +208,7 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Informações do usuario...</h5>
+          <h5 class="modal-title" id="modal-title-user">Informações do usuario...</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
